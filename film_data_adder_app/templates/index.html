@@ -4,31 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volleyball Match Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Bruin BVB Serve Info Adder</h1>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <label for="file">Upload XML File:</label>
-        <input type="file" name="file" id="file" accept=".xml">
-        <button type="submit">Upload</button>
-    </form>
-    <hr>
-    {% if current_point_data %}
-        <p><strong>Timestamp:</strong> {{ current_point_data.timestamp }}</p>
-        <p><strong>Player:</strong> {{ current_point_data.player }}</p>
-        <form action="/" method="post">
-            <label for="serve_start">Serve Start Location (1-5):</label>
-            <input type="number" name="serve_start" id="serve_start" min="1" max="5" required>
-            <label for="serve_end">Serve End Location (1-5):</label>
-            <input type="number" name="serve_end" id="serve_end" min="1" max="5" required>
-            <button type="submit">Next</button>
+    <div class="container">
+        <h1 class="title">Bruin BVB Serve Info Adder</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file" class="upload-label">Upload XML File:</label>
+            <input type="file" name="file" id="file" accept=".xml" class="upload-input">
+            <button type="submit" class="button">Upload</button>
         </form>
-    {% else %}
-        <p>No points to display.</p>
-    {% endif %}
-    <hr>
-    <form action="/save">
-        <button type="submit">Save XML File</button>
-    </form>
+        <hr>
+        {% if current_point_data %}
+            <div class="info">
+                <p><strong>Timestamp:</strong> {{ current_point_data.timestamp }}</p>
+                <p><strong>Player:</strong> {{ current_point_data.player }}</p>
+            </div>
+            <form action="/" method="post">
+                <label for="serve_start">Serve Start Location (1-5):</label>
+                <input type="number" name="serve_start" id="serve_start" min="1" max="5" required>
+                <label for="serve_end">Serve End Location (1-5):</label>
+                <input type="number" name="serve_end" id="serve_end" min="1" max="5" required>
+                <button type="submit" class="button">Next</button>
+            </form>
+        {% else %}
+            <p>No points to display.</p>
+        {% endif %}
+        <hr>
+        <form action="/save">
+            <button type="submit" class="button">Save XML File</button>
+        </form>
+    </div>
 </body>
 </html>

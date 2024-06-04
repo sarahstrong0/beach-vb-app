@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url('{{ url_for('static', filename='beach-volleyball.jpg') }}') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    color: #87CEEB; /* UCLA Blue */
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+    position: relative;
+}
+
+.title:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100px;
+    height: 5px;
+    background: gold;
+    transform: translateX(-50%);
+    animation: sparkle 1s infinite alternate;
+}
+
+@keyframes sparkle {
+    0% { box-shadow: 0 0 10px gold; }
+    100% { box-shadow: 0 0 20px gold; }
+}
+
+.upload-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.upload-input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.info {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+button.button {
+    display: inline-block;
+    background-color: #87CEEB; /* UCLA Blue */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button.button:hover {
+    background-color: #1E5D8A; /* Darker UCLA Blue */
+    box-shadow: 0 0 10px gold;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
