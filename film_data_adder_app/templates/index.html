@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volleyball Match Analyzer</title>
+    <title>Bruin BVB Serve Zone Adder</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
         <h1 class="title">Bruin BVB Serve Info Adder</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
         <form action="/" method="post" enctype="multipart/form-data">
             <label for="file" class="upload-label">Upload XML File:</label>
             <input type="file" name="file" id="file" accept=".xml" class="upload-input">
@@ -17,7 +26,7 @@
         <hr>
         {% if current_point_data %}
             <div class="info">
-                <p><strong>Timestamp:</strong> {{ current_point_data.timestamp }}</p>
+                <p><strong>Start Time:</strong> {{ current_point_data.startTime }}</p>
                 <p><strong>Player:</strong> {{ current_point_data.player }}</p>
             </div>
             <form action="/" method="post">
@@ -27,12 +36,18 @@
                 <input type="number" name="serve_end" id="serve_end" min="1" max="5" required>
                 <button type="submit" class="button">Next</button>
             </form>
+            <form action="/" method="post">
+                <button type="submit" name="previous" value="previous" class="button">Previous</button>
+            </form>
         {% else %}
-            <p>No points to display.</p>
+            <p>No more points to display.</p>
         {% endif %}
         <hr>
-        <form action="/save">
+        <form action="/save" method="post">
             <button type="submit" class="button">Save XML File</button>
+        </form>
+        <form action="/" method="post" class="clear-form">
+            <button type="submit" name="clear" value="clear" class="button clear-button">Clear</button>
         </form>
     </div>
 </body>
