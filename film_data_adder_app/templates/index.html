@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bruin BVB Serve Zone Adder</title>
+    <title>Volleyball Match Analyzer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Bruin BVB Serve Info Adder</h1>
+        <h1 class="title">Volleyball Match Analyzer</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class="flashes">
@@ -26,7 +26,7 @@
         <hr>
         {% if current_point_data %}
             <div class="info">
-                <p><strong>Start Time:</strong> {{ current_point_data.startTime }}</p>
+                <p><strong>Start Time:</strong> {{ current_point_data.displayTime }}</p>
                 <p><strong>Player:</strong> {{ current_point_data.player }}</p>
             </div>
             <form action="/" method="post">
@@ -52,3 +52,4 @@
     </div>
 </body>
 </html>
+

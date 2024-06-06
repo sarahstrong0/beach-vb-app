@@ -17,7 +17,7 @@ def load_xml(xml_path):
     global points, current_point, xml_file_path, original_filename
     xml_file_path = xml_path
     original_filename = os.path.splitext(os.path.basename(xml_file_path))[0]
-    tree = ET.parse(xml_path)
+    tree = ET.parse(xml_file_path)
     root = tree.getroot()
     points = []
     for instance in root.findall('.//ALL_INSTANCES/instance'):
@@ -33,10 +33,16 @@ def load_xml(xml_path):
                     if group_type == 'type' and text_value == 'serve':
                         start_time = start_time_element.text
                         player = instance.find('code').text
-                        points.append({'startTime': start_time, 'player': player, 'element': instance})
+                        points.append({'startTime': float(start_time), 'player': player, 'element': instance})
                         break  # Exit the loop once we find the correct label
+    points.sort(key=lambda x: x['startTime'])  # Sort points by startTime
     current_point = 0
     print(f"Loaded {len(points)} serve instances from {xml_path}")
+
+def seconds_to_minutes_seconds(seconds):
+    minutes = int(seconds) // 60
+    remaining_seconds = int(seconds) % 60
+    return f"{minutes}:{remaining_seconds:02}"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -96,6 +102,8 @@ def index():
             original_filename = None
             return redirect(url_for('index'))
     current_point_data = points[current_point] if current_point < len(points) else None
+    if current_point_data:
+        current_point_data['displayTime'] = seconds_to_minutes_seconds(current_point_data['startTime'])
     return render_template('index.html', current_point_data=current_point_data, current_point=current_point, total_points=len(points))
 
 @app.route('/save', methods=['POST'])
