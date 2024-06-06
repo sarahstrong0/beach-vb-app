@@ -3,12 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volleyball Match Analyzer</title>
+    <title>Bruin BVB Serve Zone Adder</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .zone-button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .zone-button.selected {
+            background-color: #0073e6; /* UCLA Blue */
+            color: white;
+        }
+        .zone-section {
+            margin-bottom: 20px;
+        }
+        .file-list {
+            margin-top: 20px;
+        }
+        .file-item {
+            margin: 5px 0;
+        }
+        .button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #0073e6; /* UCLA Blue */
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .clear-button {
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Volleyball Match Analyzer</h1>
+        <h1 class="title">Bruin BVB Serve Zone Adder</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class="flashes">
@@ -18,38 +55,78 @@
                 </ul>
             {% endif %}
         {% endwith %}
-        <form action="/" method="post" enctype="multipart/form-data">
-            <label for="file" class="upload-label">Upload XML File:</label>
-            <input type="file" name="file" id="file" accept=".xml" class="upload-input">
-            <button type="submit" class="button">Upload</button>
-        </form>
-        <hr>
-        {% if current_point_data %}
-            <div class="info">
-                <p><strong>Start Time:</strong> {{ current_point_data.displayTime }}</p>
-                <p><strong>Player:</strong> {{ current_point_data.player }}</p>
-            </div>
-            <form action="/" method="post">
-                <label for="serve_start">Serve Start Location (1-5):</label>
-                <input type="number" name="serve_start" id="serve_start" min="1" max="5" required>
-                <label for="serve_end">Serve End Location (1-5):</label>
-                <input type="number" name="serve_end" id="serve_end" min="1" max="5" required>
-                <button type="submit" class="button">Next</button>
-            </form>
-            <form action="/" method="post">
-                <button type="submit" name="previous" value="previous" class="button">Previous</button>
-            </form>
+        {% if original_filename %}
+            <p><strong>Current File:</strong> {{ original_filename }}</p>
         {% else %}
-            <p>No more points to display.</p>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <label for="file" class="upload-label">Upload XML File:</label>
+                <input type="file" name="file" id="file" accept=".xml" class="upload-input">
+                <button type="submit" class="button">Upload</button>
+            </form>
         {% endif %}
-        <hr>
-        <form action="/save" method="post">
-            <button type="submit" class="button">Save XML File</button>
-        </form>
-        <form action="/" method="post" class="clear-form">
-            <button type="submit" name="clear" value="clear" class="button clear-button">Clear</button>
-        </form>
+        {% if original_filename %}
+            <form action="/" method="post">
+                <button type="submit" name="clear_all" value="clear_all" class="button clear-button">Clear All and Upload Different File</button>
+            </form>
+            <hr>
+            {% if current_point_data %}
+                <div class="info">
+                    <p><strong>Start Time:</strong> {{ current_point_data.displayTime }}</p>
+                    <p><strong>Server:</strong> {{ current_point_data.player }}</p>
+                </div>
+                <form action="/" method="post" id="zoneForm">
+                    <div class="zone-section">
+                        <label>Start Zone (from the server's perspective):</label><br>
+                        {% for i in range(5, 0, -1) %}
+                            <button type="button" class="zone-button {% if current_point_data.serve_start and current_point_data.serve_start == str(i) %}selected{% endif %}" data-type="serve_start" data-value="{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                        <input type="hidden" name="serve_start" id="serve_start" value="{{ current_point_data.serve_start }}" required>
+                    </div>
+                    <div class="zone-section">
+                        <label>End Zone (from the receiver's perspective):</label><br>
+                        {% for i in range(5, 0, -1) %}
+                            <button type="button" class="zone-button {% if current_point_data.serve_end and current_point_data.serve_end == str(i) %}selected{% endif %}" data-type="serve_end" data-value="{{ i }}">{{ i }}</button>
+                        {% endfor %}
+                        <input type="hidden" name="serve_end" id="serve_end" value="{{ current_point_data.serve_end }}" required>
+                    </div>
+                    <button type="submit" class="button">Next</button>
+                </form>
+                <form action="/" method="post">
+                    <button type="submit" name="previous" value="previous" class="button">Previous</button>
+                </form>
+            {% else %}
+                <p>No more points to display.</p>
+            {% endif %}
+            <hr>
+            {% if serves_left > 0 %}
+                <p>There are {{ serves_left }} serves left to add zones for. Do you want to save as is?</p>
+            {% endif %}
+            <div style="display: flex; gap: 10px;">
+                <form action="/save_xml" method="post">
+                    <button type="submit" name="save" value="save" class="button">Save XML File</button>
+                </form>
+                <form action="/" method="post" class="clear-form">
+                    <button type="submit" name="clear" value="clear" class="button clear-button">Clear All Zones</button>
+                </form>
+            </div>
+        {% endif %}
     </div>
+    <script>
+        document.querySelectorAll('.zone-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                const value = this.getAttribute('data-value');
+                
+                // Clear previous selection
+                document.querySelectorAll(`.zone-button[data-type="${type}"]`).forEach(btn => btn.classList.remove('selected'));
+
+                // Highlight the selected button
+                this.classList.add('selected');
+
+                // Set the hidden input value
+                document.getElementById(type).value = value;
+            });
+        });
+    </script>
 </body>
 </html>
-
