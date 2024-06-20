@@ -16,6 +16,6 @@ public class Main {
 //        System.out.println("PlayerIDs: " + p);
         // Maggie Boyd: 13277940
 //        Plot.plotPlayerAttacksBySection(p.get("10532553"), 5);
-        Plot.plotPlayerAttacksBySection(p.get("13277940"), 5);
+        Plot.plotPlayerAttacksBySection(p.get("13277940"), 4);
     }
 }
