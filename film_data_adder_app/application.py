@@ -13,6 +13,9 @@ current_point = 0
 xml_file_path = None
 original_filename = None
 
+
+
+
 def load_xml(xml_path):
     global points, current_point, xml_file_path, original_filename
     xml_file_path = xml_path
