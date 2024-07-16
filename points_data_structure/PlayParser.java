@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PlayParser { 
 
-    ArrayList<Action> plays = new ArrayList<>();  // PLAYS
+    static ArrayList<Action> plays = new ArrayList<>();  // PLAYS
 
     static HashMap<String, Player> players = new HashMap<>(); // PLAYER
     static HashMap<String, String> codeToPlayerId = new HashMap<>(); // Code to PlayerID
@@ -34,7 +34,7 @@ public class PlayParser {
         return ret.toString();
     }
 
-    public static void parse(String FILENAME) { 
+    public static ArrayList<Action> parse(String FILENAME) { 
         
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -65,13 +65,36 @@ public class PlayParser {
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
 
-                    
+                    Element element = (Element) node;
+
+                    String start = element.getElementsByTagName("start").item(0).getTextContent();
+                    String end = element.getElementsByTagName("end").item(0).getTextContent();
+                    String code = element.getElementsByTagName("code").item(0).getTextContent();
+                    int id = Integer.parseInt(element.getElementsByTagName("ID").item(0).getTextContent());
+
+                    System.out.println("Current Element : " + (temp + 1));
+                    System.out.println("Start time: " + start);
+                    System.out.println("End time: " + end);
+                    System.out.println("Code: " + code);
+                    System.out.println("ID: " + id);
+
+                    NodeList labelList = element.getElementsByTagName("label");
+                    Player currPlayer = null;
+                    String currPlayerID = null;
+                    String currType = null;
+                    String currRes = null;
+                    String currStartX = null;
+                    String currStartY = null;
+                    String currEndX = null;
+                    String currEndY = null;
+                    String currSubType = null;
 
 
 
 
 
                 }
+                
 
 
 
@@ -90,6 +113,8 @@ public class PlayParser {
         catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
+
+        return plays;
 
 
 

@@ -62,7 +62,7 @@ public class Parser {
 
 
 
-            for (int temp = 0; temp < list.getLength(); temp++) {
+            for (int temp = 0; temp < list.getLength(); temp++) { // iterates through each instance
 
                 Node node = list.item(temp);
 
