@@ -15,18 +15,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Dig extends Action { 
-    
-    public int quality;
+public class PointParser { 
 
-    public Dig(int playerID, int quality) { 
-        super(playerID, "dig");  // type = "block", playerID set
-        this.quality = quality;
-    }
-    
-    @Override 
-    public String toString() { 
-        return "Type:  Dig --- Quality: " + String.valueOf(this.quality) + " --- playerID " + this.playerID; 
-    }
+    // 
+
 
 }

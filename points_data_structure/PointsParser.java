@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Parser {
+public class PointsParser {
     public static void main(String[] args) {
         String filename = "/path/to/UCLA vs USC 3's 5_5_24  - Hudl Tags.xml";
         Match match = parseMatch(filename);
@@ -84,4 +84,4 @@ public class Parser {
         }
         return match;
     }
-}-
+}
