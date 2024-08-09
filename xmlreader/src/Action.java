@@ -15,20 +15,20 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Block extends Action { 
-    
-    public String result;
+public class Action { 
 
-    public Block(int playerID, String result) { 
-        super(playerID, "block");  // type = "block", playerID set
-        this.result = result;
-    
+    public int playerID; 
+
+    public Action(int playerID) { 
+        this.playerID = playerID;
     }
-    
-    @Override 
+
+    public String getPlayerID() {
+        return String.valueOf(this.playerID);
+    }
+
     public String toString() { 
-        return "Type:  Block --- Result: " + this.result + " --- playerID " + this.playerID; 
+        return "PlayerID : " + this.playerID;
     }
-
 
 }

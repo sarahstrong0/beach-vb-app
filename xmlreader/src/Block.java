@@ -15,16 +15,21 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Set extends Action { 
+public class Block extends Action { 
+    
+    public String result;
+    public String type;
 
-    public Set(int playerID) { 
-        super(playerID, "set");  // type = "pass", playerID set
+    public Block(int playerID, String result) { 
+        super(playerID); 
+        this.type = "block";  // type = "block", playerID set
+        this.result = result;
     
     }
     
     @Override 
     public String toString() { 
-        return "Type:  Set --- playerID " + this.playerID; 
+        return "Type:  Block --- Result: " + this.result + " --- playerID " + this.playerID; 
     }
 
 

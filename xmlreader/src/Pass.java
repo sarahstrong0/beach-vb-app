@@ -20,9 +20,11 @@ public class Pass extends Action {
     public boolean isServeRecieve;
     public Location serveLocation;
     public int quality;
+    public String type;
 
     public Pass(int playerID, boolean isServeRecieve, Location serveLocation, int quality) { 
-        super(playerID, "pass");  // type = "pass", playerID set
+        super(playerID); 
+        this.type = "pass";  // type = "pass", playerID set
         this.isServeRecieve = isServeRecieve;
         this.serveLocation = serveLocation; 
         this.quality = quality;

@@ -15,26 +15,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Action { 
-
-    public int playerID; 
+public class Set extends Action { 
     public String type;
 
-    public Action(int playerID, String type) { 
-        this.playerID = playerID;
-        this.type = type;
+    public Set(int playerID) { 
+        super(playerID);
+        this.type = "set";  // type = "pass", playerID set
+    
     }
-
-    public String getPlayerID() {
-        return this.playerID;
-    }
-
-    public String getType() { 
-        return this.type;
-    }
-
+    
+    @Override 
     public String toString() { 
-        return this.type.toUpperCase() + " --- " + this.playerID;
+        return "Type:  Set --- playerID " + this.playerID; 
     }
+
 
 }

@@ -18,9 +18,11 @@ import java.util.List;
 public class Dig extends Action { 
     
     public int quality;
+    public String type;
 
     public Dig(int playerID, int quality) { 
-        super(playerID, "dig");  // type = "block", playerID set
+        super(playerID);
+        this.type = "dig";  // type = "block", playerID set
         this.quality = quality;
     }
     

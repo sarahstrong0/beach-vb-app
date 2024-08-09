@@ -20,9 +20,11 @@ public class Attack extends Action {
     public String result;
     public Location startLocation;
     public Location endLocation;
+    public String type;
 
     public Attack(int playerID, String result, Location startLocation, Location endLocation) { 
-        super(playerID, "attack");  // type = "attack", playerID set
+        super(playerID);
+        this.type = "attack";  // type = "attack", playerID set
         this.result = result;
         this.startLocation = startLocation; 
         this.endLocation = endLocation; 

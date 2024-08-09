@@ -10,15 +10,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
-public class Parser {
-//    private static final String FILENAME = "/Users/maliakowal/Downloads/lexymaggievsUSC.xml";
-    static HashMap<String, Player> players = new HashMap<>();
-    static HashMap<String, String> codeToPlayerId = new HashMap<>();
+public class PlayParser { 
+
+    static ArrayList<Action> plays = new ArrayList<>();  // PLAYS
+
+    static HashMap<String, Player> players = new HashMap<>(); // PLAYER
+    static HashMap<String, String> codeToPlayerId = new HashMap<>(); // Code to PlayerID
 
     public static HashMap<String, Player> getPlayers() {
         return players;
@@ -32,12 +34,13 @@ public class Parser {
         return ret.toString();
     }
 
-    public static HashMap<String, Player> fillPlayers(String FILENAME) {
+    public static ArrayList<Action> parse(String FILENAME) { 
+        
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         try {
 
-            // optional, but recommended
+             // optional, but recommended
             // process XML securely, avoid attacks like XML External Entities (XXE)
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
@@ -53,16 +56,12 @@ public class Parser {
             System.out.println("Root Element :" + doc.getDocumentElement().getNodeName());
             System.out.println("------");
 
+            String indent = "     ";
+
             // get <instance>
             NodeList list = doc.getElementsByTagName("instance");
 
-            ArrayList<String> prevTypes = new ArrayList<>();
-
-            Boolean serveRecieve = false;
-
-
-
-            for (int temp = 0; temp < list.getLength(); temp++) { // iterates through each instance
+            for (int temp = 0; temp < list.getLength(); temp++) {
 
                 Node node = list.item(temp);
 
@@ -70,23 +69,25 @@ public class Parser {
 
                     Element element = (Element) node;
 
-                    String indent = "     ";
-
                     String start = element.getElementsByTagName("start").item(0).getTextContent();
                     String end = element.getElementsByTagName("end").item(0).getTextContent();
                     String code = element.getElementsByTagName("code").item(0).getTextContent();
-
+                    int id = Integer.parseInt(element.getElementsByTagName("ID").item(0).getTextContent());
 
                     System.out.println("Current Element : " + (temp + 1));
                     System.out.println("Start time: " + start);
                     System.out.println("End time: " + end);
                     System.out.println("Code: " + code);
-//                    if (!codeToPlayerId.containsKey(code)) {
-//                        codeToPlayerId.put(code, null);
-//                    }
+                    System.out.println("ID: " + id);
 
-                    // Label Nodes
                     NodeList labelList = element.getElementsByTagName("label");
+
+                    // Make action object
+
+                    Action currAction;
+
+                    // Make values for attack info
+
                     Player currPlayer = null;
                     String currPlayerID = null;
                     String currType = null;
@@ -95,25 +96,24 @@ public class Parser {
                     String currStartY = null;
                     String currEndX = null;
                     String currEndY = null;
-                    String currSubType = null;
+                    String currQuality = null;
+                    String currServeLocation = null;
 
+                    
+                    // Go through each label in the instance (play)
                     for (int i = 0; i < labelList.getLength(); i++) {
                         Node label = labelList.item(i);
-                        if (label.getNodeType() == Node.ELEMENT_NODE) {
+                        if (label.getNodeType() == Node.ELEMENT_NODE) { 
                             Element l = (Element) label;
                             String group = l.getElementsByTagName("group").item(0).getTextContent();
                             String text = l.getElementsByTagName("text").item(0).getTextContent();
-//                            System.out.println(indent + group + ": " + text);
 
                             switch (group) {
                                 case "type":
                                     currType = text;
                                     System.out.println(indent + group + ": " + text);
-                                    prevTypes.add(currType);
-//                                    System.out.println(prevTypes);
                                     break;
                                 case "subType":
-                                    currSubType = text;
                                     System.out.println(indent + group + ": " + text);
                                     break;
                                 case "result":
@@ -147,14 +147,19 @@ public class Parser {
                                     currEndY = text;
                                     System.out.println(indent + group + ": " + text);
                                     break;
+                                case "quality": 
+                                    currQuality = text; 
+                                    System.out.println(indent + group + ": " + text);
+                                    
                                 default:
-                                    break;
                             }
                         }
                     }
                     if (currRes == null) {
                         currRes = "None";
                     }
+
+                    // Set up locations
                     Location startLoc = new Location(currStartX, currStartY);
                     Location endLoc = new Location(currEndX, currEndY);
 
@@ -162,25 +167,32 @@ public class Parser {
                         // if ((prevTypes.get(prevTypes.size() - 2)).equals("set") && (prevTypes.get(prevTypes.size() - 3)).equals("pass") && (prevTypes.get(prevTypes.size() - 4)).equals("serve")) {
                         //     currPlayer.addAttack(startLoc, endLoc, currRes, true);
                         // }
-                        System.out.println();
                         currPlayer.addAttack(startLoc, endLoc, currRes, false);
                     }
 
                 }
+
             }
-            for (Player p: players.values()) {
-                System.out.println("Player Name: " + p.playerCode);
-//                System.out.println(p.attacks.keySet());
-                for (Location loc: p.attacks.keySet()) {
-                    System.out.println("     " + "Start: " + loc + " : " + arrayPrinter(p.attacks.get(loc)));
-                }
-            }
+
+
+
+
+
+
+
 
         }
         catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-        return players;
+
+        return plays;
+
+
+
+
+
+
     }
 
 
