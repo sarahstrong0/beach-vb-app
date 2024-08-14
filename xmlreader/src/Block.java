@@ -20,7 +20,7 @@ public class Block extends Action {
     public String result;
     public String type;
 
-    public Block(int playerID, String result) { 
+    public Block(String playerID, String result) { 
         super(playerID); 
         this.type = "block";  // type = "block", playerID set
         this.result = result;

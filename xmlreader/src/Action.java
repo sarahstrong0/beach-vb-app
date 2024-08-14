@@ -17,9 +17,9 @@ import java.util.List;
 
 public class Action { 
 
-    public int playerID; 
+    public String playerID; 
 
-    public Action(int playerID) { 
+    public Action(String playerID) { 
         this.playerID = playerID;
     }
 

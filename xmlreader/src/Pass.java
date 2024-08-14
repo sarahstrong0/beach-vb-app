@@ -17,35 +17,28 @@ import java.util.List;
 
 public class Pass extends Action { 
 
-    public boolean isServeRecieve;
-    public Location serveLocation;
-    public int quality;
+    public String isServeRecieve;
+    public String quality;
     public String type;
 
-    public Pass(int playerID, boolean isServeRecieve, Location serveLocation, int quality) { 
+    public Pass(String playerID, String isServeRecieve, String quality) { 
         super(playerID); 
         this.type = "pass";  // type = "pass", playerID set
         this.isServeRecieve = isServeRecieve;
-        this.serveLocation = serveLocation; 
         this.quality = quality;
     }
 
-    public String getIsServeRecieve() {
+    public String isServeRecieve() {
         return this.isServeRecieve;
     }
 
-    public Location getServeLocation() { 
-        return this.serveLocation;
-    }
-
     public int quality() { 
-        return this.quality;
+        return Integer.valueOf(this.quality);
     }
     
     @Override 
     public String toString() { 
-        return "Type: Pass --- serveRecieve?: " + String.valueOf(this.isServeRecieve) + " --- StartLocation: " 
-        + this.startLocation.toString() + " --- Quality: " + String.valueOf(quality) + " --- playerID: " + this.playerID;
+        return "Type: Pass --- serveRecieve?: " + String.valueOf(this.isServeRecieve) + " --- Quality: " + String.valueOf(quality) + " --- playerID: " + this.playerID;
     }
 
 

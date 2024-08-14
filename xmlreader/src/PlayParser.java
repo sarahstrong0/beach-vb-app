@@ -98,6 +98,7 @@ public class PlayParser {
                     String currEndY = null;
                     String currQuality = null;
                     String currServeLocation = null;
+                    String currSubType = null;
 
                     
                     // Go through each label in the instance (play)
@@ -114,6 +115,7 @@ public class PlayParser {
                                     System.out.println(indent + group + ": " + text);
                                     break;
                                 case "subType":
+                                    currSubType = text;
                                     System.out.println(indent + group + ": " + text);
                                     break;
                                 case "result":
@@ -152,6 +154,7 @@ public class PlayParser {
                                     System.out.println(indent + group + ": " + text);
                                     
                                 default:
+                                    break;
                             }
                         }
                     }
@@ -170,20 +173,79 @@ public class PlayParser {
                         currPlayer.addAttack(startLoc, endLoc, currRes, false);
                     }
 
+                    // Set type of action
+
+                    Action currPlay = null;
+
+                    switch (currType) { 
+                        case "attack": 
+                            currPlay = new Attack(currPlayerID, currRes, startLoc, endLoc);
+                            break; 
+                        case "block": 
+                            currPlay = new Block(currPlayerID, currRes);
+                            break;
+                        case "dig": 
+                            currPlay = new Dig(currPlayerID);
+                            break; 
+                        case "freeBall": 
+                            currPlay = new Freeball(currPlayerID, currRes, currSubType);
+                            break; 
+                        case "pass": 
+                            String currIsServeRecieve = null;
+                            if (currSubType == null) { 
+                                currIsServeRecieve = "false"; 
+                            } else { 
+                                currIsServeRecieve = "true";
+                            }
+                            currPlay = new Pass(currPlayerID, currIsServeRecieve, currQuality);
+                            break; 
+                        case "set": 
+                            currPlay = new Set(currPlayerID);
+                            break;
+                        case "serve": 
+                            currPlay = new Serve(currPlayerID, currRes, currQuality);
+                            break;
+                        default: 
+                            break;
+                    }
+
+                    if (currPlay == null) { 
+                        System.out.println(currType);
+                    }
+                    plays.add(currPlay);
                 }
 
             }
 
-
-
-
-
-
-
-
-        }
+        } 
         catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
+        }
+
+
+
+        ArrayList<Action> serveRecievePlays = new ArrayList<>();
+
+        System.out.println(plays.size());
+        for (int i = 0; i < plays.size(); i++) {
+            Action a = plays.get(i);
+            System.out.println(plays.get(i));
+
+            if (a instanceof Pass) { 
+                Pass p = (Pass) a;
+                if (p.isServeRecieve == "true") { 
+                    serveRecievePlays.add(a);
+                }
+            }
+
+            // for (int j = 0; j < serveRecievePlays.size(); j++) { 
+            //     System.out.println(serveRecievePlays.get(i));
+            // }
+
+        }
+        System.out.println(serveRecievePlays.size());
+         for (int j = 0; j < serveRecievePlays.size(); j++) { 
+             System.out.println(serveRecievePlays.get(j));
         }
 
         return plays;

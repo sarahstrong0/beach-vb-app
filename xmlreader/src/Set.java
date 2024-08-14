@@ -18,7 +18,7 @@ import java.util.List;
 public class Set extends Action { 
     public String type;
 
-    public Set(int playerID) { 
+    public Set(String playerID) { 
         super(playerID);
         this.type = "set";  // type = "pass", playerID set
     
@@ -26,7 +26,7 @@ public class Set extends Action {
     
     @Override 
     public String toString() { 
-        return "Type:  Set --- playerID " + this.playerID; 
+        return "Type: Set --- playerID " + this.playerID; 
     }
 
 

@@ -32,7 +32,7 @@ public class Main {
         //Parser.fillPlayers("/Users/maliakowal/Documents/BeachVBHittingCharts/FAULSU4s-5_5_23XML.xml");
 //        System.out.println("PlayerIDs: " + p);
         // Maggie Boyd: 13277940
-//        Plot.plotPlayerAttacksBySection(p.get("10532553"), 5);
+   //     Plot.plotPlayerAttacksBySection(p.get("10532553"), 5);
         q = PlayParser.parse("example_XML.xml");
         //Plot.plotPlayerAttacksBySection(p.get("13277940"), 4);
     }

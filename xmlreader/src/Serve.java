@@ -15,19 +15,28 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class Dig extends Action { 
-    
+public class Serve extends Action {
+    public String result;
     public String quality;
     public String type;
 
-    public Dig(String playerID) { 
-        super(playerID);
-        this.type = "dig";  // type = "block", playerID set
+    public Serve(String playerID, String result, String quality) { 
+        super(playerID); 
+        this.type = "serve";  // type = "serve", playerID set
+        this.result = result;
+        this.quality = quality;
+    }
+
+    public int quality() { 
+        return Integer.valueOf(this.quality);
     }
     
     @Override 
     public String toString() { 
-        return "Type: Dig --- playerID " + this.playerID; 
+        return "Type: Serve --- result: " + this.result + " --- Quality: " + this.quality + " --- playerID: " + this.playerID;
     }
 
+
 }
+    
+

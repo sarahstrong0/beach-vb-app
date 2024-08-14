@@ -22,7 +22,7 @@ public class Attack extends Action {
     public Location endLocation;
     public String type;
 
-    public Attack(int playerID, String result, Location startLocation, Location endLocation) { 
+    public Attack(String playerID, String result, Location startLocation, Location endLocation) { 
         super(playerID);
         this.type = "attack";  // type = "attack", playerID set
         this.result = result;

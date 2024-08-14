@@ -19,19 +19,22 @@ import java.util.HashSet;
 public class Freeball extends Action { 
     public String result = null;
     public String type;
+    public String subtype;
 
-    public Freeball(int playerID, String result) { 
+    public Freeball(String playerID, String result, String subtype) { 
         super(playerID); 
-        this.type = "freeball";  // type = "block", playerID set
+        this.type = "freeball";  // type = "FREEBALL", playerID set
         this.result = result;
+        this.subtype = subtype;
+
     }
     
     @Override 
     public String toString() { 
         if (this.result != null) { 
-            return "Type:  Dig --- Result: " + this.result + "playerID: " + this.playerID;
+            return "Type: FreeBall --- Result: " + this.result + " playerID: " + this.playerID;
         } else  {
-            return "Type:  Dig --- playerID: " + this.playerID; 
+            return "Type:  FreeBall --- playerID: " + this.playerID; 
         }
     }
 
