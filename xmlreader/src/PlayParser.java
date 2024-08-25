@@ -225,6 +225,7 @@ public class PlayParser {
 
 
         ArrayList<Action> serveRecievePlays = new ArrayList<>();
+        ArrayList<Integer> serveRecieveIndices = new ArrayList<>();
 
         System.out.println(plays.size());
         for (int i = 0; i < plays.size(); i++) {
@@ -235,6 +236,7 @@ public class PlayParser {
                 Pass p = (Pass) a;
                 if (p.isServeRecieve == "true") { 
                     serveRecievePlays.add(a);
+                    serveRecieveIndices.add(i);
                 }
             }
 
@@ -244,16 +246,19 @@ public class PlayParser {
 
         }
         System.out.println(serveRecievePlays.size());
-         for (int j = 0; j < serveRecievePlays.size(); j++) { 
-             System.out.println(serveRecievePlays.get(j));
+
+
+        // Find fbso's
+        for (int j = 0; j < serveRecieveIndices.size(); j++) { 
+            Integer firstActionIndex = serveRecieveIndices.get(j) + 1;
+            Integer secondActionIndex = serveRecieveIndices.get(j) + 2;
+            Integer thirdActionIndex = serveRecieveIndices.get(j) + 3;    
+            System.out.println(serveRecievePlays.get(j));    
+        
         }
 
-        return plays;
-
-
-
-
-
+        
+            //System.out.println(serveRecievePlays.get(j));
 
     }
 
